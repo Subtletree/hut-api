@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :bookings
+  resources :intentions
   post 'token-auth', to: 'user_sessions#create'
   delete 'token-auth', to: 'user_sessions#destroy'
 

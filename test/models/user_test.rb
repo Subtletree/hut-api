@@ -19,6 +19,8 @@
 #  activation_token                :string
 #  activation_token_expires_at     :datetime
 #  token                           :string
+#  phone_number                    :string
+#  mobile_number                   :string
 #
 
 require 'test_helper'

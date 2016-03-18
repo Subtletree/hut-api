@@ -11,10 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308013436) do
+ActiveRecord::Schema.define(version: 20160316055201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.string   "booking_type", null: false
+    t.integer  "hut_id"
+    t.integer  "intention_id"
+    t.string   "comment"
+    t.date     "date",         null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "bookings", ["intention_id"], name: "index_bookings_on_intention_id", using: :btree
+
+  create_table "intentions", force: :cascade do |t|
+    t.string   "name",                                null: false
+    t.integer  "user_id"
+    t.text     "participants",           default: [],              array: true
+    t.integer  "number_of_participants",              null: false
+    t.string   "emergency_name",                      null: false
+    t.string   "emergency_number",                    null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "intentions", ["user_id"], name: "index_intentions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                           null: false
@@ -33,6 +58,8 @@ ActiveRecord::Schema.define(version: 20160308013436) do
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
     t.string   "token"
+    t.string   "phone_number"
+    t.string   "mobile_number"
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
@@ -40,4 +67,6 @@ ActiveRecord::Schema.define(version: 20160308013436) do
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
 
+  add_foreign_key "bookings", "intentions"
+  add_foreign_key "intentions", "users"
 end

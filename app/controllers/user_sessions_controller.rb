@@ -4,18 +4,13 @@ class UserSessionsController < ApplicationController
 
   def create
     @user = User.where(email: params[:email]).first
-    if @user and @user.valid_password?(params[:password]) and @user.activation_state == 'active'
+    if @user and @user.valid_password?(params[:password])
       @token = SecureRandom.urlsafe_base64(nil, false)
       @user.update_attribute(:token, BCrypt::Password.create(@token))
       render json: {token: @user.create_new_auth_token}
-    elsif @user and @user.activation_state == 'pending'
-      render json: {
-        success: false,
-        errors: ['email not confirmed']
-      }, status: 401
     else
       render json: {
-        errors: ['Bad Credentials']
+        errors: ['Invalid email or password']
       }, status: 401
     end
   end

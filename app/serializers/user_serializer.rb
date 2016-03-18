@@ -19,8 +19,10 @@
 #  activation_token                :string
 #  activation_token_expires_at     :datetime
 #  token                           :string
+#  phone_number                    :string
+#  mobile_number                   :string
 #
 
 class UserSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :email, :phone_number, :first_name, :last_name
 end

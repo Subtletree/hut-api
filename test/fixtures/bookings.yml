@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: bookings
+#
+#  id           :integer          not null, primary key
+#  booking_type :string           not null
+#  hut_id       :integer
+#  intention_id :integer
+#  comment      :string
+#  date         :date             not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  booking_type: MyString
+  hut: one
+  intention: one
+  comment: MyString
+  date: 2016-03-10
+
+two:
+  booking_type: MyString
+  hut: two
+  intention: two
+  comment: MyString
+  date: 2016-03-10

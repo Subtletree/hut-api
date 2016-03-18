@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: intentions
+#
+#  id                     :integer          not null, primary key
+#  name                   :string           not null
+#  user_id                :integer
+#  participants           :text             default([]), is an Array
+#  number_of_participants :integer          not null
+#  emergency_name         :string           not null
+#  emergency_number       :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: one
+  participants: MyText
+  number_of_participants: 1
+  emergency_name: MyString
+  emergency_number: MyString
+
+two:
+  name: MyString
+  user: two
+  participants: MyText
+  number_of_participants: 1
+  emergency_name: MyString
+  emergency_number: MyString
