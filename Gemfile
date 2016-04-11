@@ -4,6 +4,7 @@ ruby '2.3.0'
 gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers'
 gem 'rails_12factor', group: :production
 gem 'sorcery'
+gem 'jwt'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '>= 5.0.0.beta3', '< 5.1'

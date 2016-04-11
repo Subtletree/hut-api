@@ -1,13 +1,12 @@
 class UserSessionsController < ApplicationController
 
-  before_action :set_user_by_token, only: [:destroy]
+  before_action :authenticate!, only: [:destroy]
 
   def create
-    @user = User.where(email: params[:email]).first
+    # todo: make email search case insensitive
+    @user = User.find_by_email(params[:email])
     if @user and @user.valid_password?(params[:password])
-      @token = SecureRandom.urlsafe_base64(nil, false)
-      @user.update_attribute(:token, BCrypt::Password.create(@token))
-      render json: {token: @user.create_new_auth_token}
+      render json: {token: generate_jwt(@user)}
     else
       render json: {
         errors: ['Invalid email or password']
@@ -15,8 +14,9 @@ class UserSessionsController < ApplicationController
     end
   end
 
+  # dont need action at all?
   def destroy
-    @user.update_attribute(:token, nil)
+    #@user.update_attribute(:token, nil)
     render status: 200
   end
 end

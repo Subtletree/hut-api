@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316055201) do
+ActiveRecord::Schema.define(version: 20160408050559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20160316055201) do
     t.string   "emergency_number",                    null: false
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.date     "start_date",                          null: false
+    t.date     "end_date",                            null: false
   end
 
   add_index "intentions", ["user_id"], name: "index_intentions_on_user_id", using: :btree

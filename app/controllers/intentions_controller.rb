@@ -11,11 +11,13 @@
 #  emergency_number       :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  start_date             :date             not null
+#  end_date               :date             not null
 #
 
 class IntentionsController < ApplicationController
 
-  before_action :set_user_by_token#, except: [:create, :update, :show, :destroy]
+  before_action :authenticate!, only: [:create]
   before_action :set_intention, only: [:show, :update, :destroy]
 
   # GET /intentions
@@ -32,8 +34,7 @@ class IntentionsController < ApplicationController
 
   # POST /intentions
   def create
-    #@intention = Intention.new(intention_params)
-    @intention = @user.intentions.new(intention_params)
+    @intention = Intention.new(intention_params.merge(user_id: this_user_id))
 
     if @intention.save
       render json: @intention, status: :created, location: @intention
@@ -66,6 +67,6 @@ class IntentionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def intention_params
-      ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:name, :user_id, :participants, :number_of_participants, :emergency_name, :emergency_number])
+      ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:name, :participants, :number_of_participants, :emergency_name, :emergency_number])
     end
 end

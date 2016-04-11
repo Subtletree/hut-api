@@ -19,10 +19,13 @@
 #  activation_token                :string
 #  activation_token_expires_at     :datetime
 #  token                           :string
+#  phone_number                    :string
+#  mobile_number                   :string
 #
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authenticate!, only: [:show]
+  before_action :set_user, only: [:update, :destroy]
 
   # GET /users
   def index
@@ -33,7 +36,8 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    @user = User.includes(:intentions).find(this_user_id)
+    render json: @user, include: ['intentions']
   end
 
   # POST /users

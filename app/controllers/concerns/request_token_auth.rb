@@ -1,26 +1,45 @@
-require 'bcrypt'
-
 module RequestTokenAuth
   extend ActiveSupport::Concern
 
-  # user auth
-  def set_user_by_token
-    # parse header for values necessary for authentication
-    uid        = request.headers['uid'] || params['uid']
-    @token     = request.headers['access-token'] || params['access-token']
+  def generate_jwt(user)
+    TokenProvider.issue_token({
+      user_id: user.id,
+      user_email: user.email
+    })
+  end
 
-    return false unless @token
-
-    # mitigate timing attacks by finding by uid instead of auth token
-    user = uid && User.find_by_uid(uid)
-
-    if user && user.valid_token?(@token)
-      return user
-    else
-      # zero all values previously set values
-      return nil
+  def validate_token!
+    begin
+      TokenProvider.valid?(token)
+    rescue
+      head :unauthorized
+      #render json: 'Unauthorised', status: 401, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer and return false
     end
   end
 
+  def authenticate!(fetch_user: false)
+    begin
+      payload, header = TokenProvider.valid?(token)
+      if fetch_user
+        @this_user = User.find_by(id: payload['user_id'])
+      else
+        @this_user_id = payload['user_id']
+      end
+    rescue
+      head :unauthorized
+      #render json: 'Unauthorised', status: 401, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer and return false
+    end
+  end
 
+  def this_user
+    @this_user ||= authenticate!(fetch_user: true)
+  end
+
+  def this_user_id
+    @this_user_id ||= authenticate!
+  end
+
+  def token
+    request.headers['Authorization'].split(' ').last
+  end
 end

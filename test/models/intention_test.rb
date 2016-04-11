@@ -11,6 +11,8 @@
 #  emergency_number       :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  start_date             :date             not null
+#  end_date               :date             not null
 #
 
 require 'test_helper'

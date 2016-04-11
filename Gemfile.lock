@@ -162,6 +162,7 @@ DEPENDENCIES
   annotate
   bcrypt (~> 3.1.7)
   byebug
+  jwt
   listen (~> 3.0.5)
   passenger
   pg (~> 0.18)
