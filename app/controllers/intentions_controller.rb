@@ -18,7 +18,7 @@
 class IntentionsController < ApplicationController
 
   before_action :authenticate!, only: [:create]
-  before_action :set_intention, only: [:show, :update, :destroy]
+  before_action :set_intention, only: [:update, :destroy]
 
   # GET /intentions
   def index
@@ -29,11 +29,13 @@ class IntentionsController < ApplicationController
 
   # GET /intentions/1
   def show
-    render json: @intention
+    @intention = Intention.includes(:bookings).find(params[:id])
+    render json: @intention, include: [:bookings]
   end
 
   # POST /intentions
   def create
+    p intention_params.merge(user_id: this_user_id)
     @intention = Intention.new(intention_params.merge(user_id: this_user_id))
 
     if @intention.save
@@ -67,6 +69,8 @@ class IntentionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def intention_params
-      ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:name, :participants, :number_of_participants, :emergency_name, :emergency_number])
+      ActiveModelSerializers::Deserialization.jsonapi_parse(params, embedded: [:bookings])
+      #ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:name, :participants, :number_of_participants, :start_date, :end_date, :emergency_name, :emergency_number], embedded: [:bookings])
+      #ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:name, :participants, :number_of_participants, :emergency_name, :emergency_number])
     end
 end

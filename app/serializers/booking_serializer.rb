@@ -14,10 +14,13 @@
 
 class BookingSerializer < ActiveModel::Serializer
   attributes :id, :booking_type, :comment, :date
-  has_one :hut
-  belongs_to :intention
+  has_one :hut, if: :has_hut?
 
   def hut
-    {id: object.hut_id}
+    {id: object.hut_id, type: 'huts'}
+  end
+
+  def has_hut?
+    object.hut_id.present?
   end
 end

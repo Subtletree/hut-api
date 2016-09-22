@@ -36,14 +36,13 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.includes(:intentions).find(this_user_id)
-    render json: @user, include: ['intentions']
+    @user = User.includes(intentions: [:bookings]).find(this_user_id)
+    render json: @user, include: [intentions: [:bookings]]
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
-
     if @user.save
       render json: @user, status: :created, location: @user
     else

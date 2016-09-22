@@ -17,4 +17,5 @@
 
 class IntentionSerializer < ActiveModel::Serializer
   attributes :id, :name, :participants, :number_of_participants, :emergency_name, :emergency_number, :start_date, :end_date
+  has_many :bookings
 end

@@ -15,4 +15,8 @@
 class Booking < ApplicationRecord
   belongs_to :hut
   belongs_to :intention
+
+  validates :date, presence: true
+  validates :comment, presence: true
+  validates :hut_id, presence: true, if: Proc.new { |a| a.booking_type == 'hut' }
 end

@@ -17,10 +17,15 @@
 
 class Intention < ApplicationRecord
   belongs_to :user
+  has_many :bookings, dependent: :destroy
+
+  accepts_nested_attributes_for :bookings
 
   validates :name, presence: true
   validates :user, presence: true
   validates :number_of_participants, presence: true
   validates :emergency_name, presence: true
   validates :emergency_number, presence: true
+  validates :start_date, presence: true
+  validates :end_date, presence: true
 end
